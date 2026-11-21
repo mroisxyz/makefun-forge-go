@@ -131,7 +131,7 @@ func serve(s *Store, ln net.Listener) {
 				// keep-alive socket on some hosts; a fresh connection per REST call is
 				// measurably faster. Git clients reuse their own connections, so keep
 				// keep-alive there.
-				closeAfter := q.Method != "" && (q.Path == "/healthz" || strings.HasPrefix(q.Path, "/api/") || q.Path == "/mcp")
+				closeAfter := false // keep-alive: faster on the Linux production sandbox where undici reuses sockets efficiently
 				head := make([]byte, 0, 256)
 				head = append(head, statusLine(resp.Status)...)
 				for k, v := range resp.Headers {
